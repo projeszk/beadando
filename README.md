@@ -38,10 +38,11 @@
     *  make
     *  sudo make install
     *  python
-      ```>>> import numpy
-      >>> import cv2
-      >>> print cv2.__version__
-      ```
+
+        ```>>> import numpy
+        >>> import cv2
+        >>> print cv2.__version__
+        ```
 
   4. Ha nincs hibaüzenet, akkor a fejlesztői környezet használatra kész
 
