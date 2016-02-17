@@ -44,7 +44,6 @@
         >>> import cv2
         >>> print cv2.__version__
         ```
-
   4. Ha nincs hibaüzenet, akkor a fejlesztői környezet használatra kész
 
 
