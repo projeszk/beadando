@@ -1,1 +1,0 @@
-Image temporary directory. Don't delete it.

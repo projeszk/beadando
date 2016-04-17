@@ -7,27 +7,54 @@ import logging
 import errno
 from properties import property as prop
 
-# Simple multithreading socket server class
 class SocketServer:
+    """
+    Multithreaded socket server.
+    """
     __SERVER_SOCKET = None
-    __HOST = prop.HOST
-    __PORT = prop.PORT
-    __TIMEOUT = 10
+    __HOST = None
+    __PORT = None
+    __TIMEOUT = prop.TIMEOUT
 
-    def __init__(self):
+    def __init__(self, host=prop.HOST, port=prop.PORT):
+        """
+        Construct new SocketServer object.
+        
+        :type host: str
+        :param host: Host name
+        :type port: number
+        :param port: Port number
+        :return:
+        """
+        self.__HOST = host
+        self.__PORT = port
         logging.basicConfig(level=logging.DEBUG, format="[%(levelname)s] %(message)s")
         try:
             self.__SERVER_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.__SERVER_SOCKET.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.__SERVER_SOCKET.settimeout(self.__TIMEOUT)
+            
+            if not os.path.exists(prop.TMP_DIR):
+                os.makedirs(prop.TMP_DIR)
         except socket.error as error:
             logging.error("Error while create the server socket " + str(error))
             sys.exit(1)
 
     def __del__(self):
+        """
+        Free ServerSocket object.
+        
+        :return:
+        """
         self.__SERVER_SOCKET.close()
 
     def run(self):
+        """
+        Server run method.
+        Infinite multithreaded server loop.
+        
+        :return:
+        """
         server = self.__SERVER_SOCKET
         try:
             server.bind((self.host(), self.port()))
@@ -53,22 +80,40 @@ class SocketServer:
             sys.exit(1)
 
     def host(self):
+        """
+        Return the server host name.
+        
+        :return: host name
+        :rtype: str
+        """
         return self.__HOST
 
     def port(self):
+        """
+        Return server port number.
+        
+        :return: port number
+        :rtype: number
+        """
         return self.__PORT
 
     def client_handler(self, client, address):
+        """
+        Callable method.
+        Handle image receive from client.
+        
+        :return:
+        """
         client.send("Connected to the server. Send a picture of the analysis." + os.linesep)
-        with open(prop.IMG_DIR_PATH + str(address[1]) + "_img.jpg", "wb") as img:
+        filename = str(address[1]) + "_img.jpg"
+        with open(prop.TMP_DIR + filename, "wb") as img:
+            logging.debug(filename + " created")
             while True:
                 try: 
                     data = client.recv(prop.BUFF_SIZE)
-                    reply = data
                     if not data: break
                     img.write(data)
-                    client.send(reply)
-                    print "sent: " + reply
+                    client.send("Package arrived from client " + str(address[1]) + os.linesep)
                 except socket.error as error:
                     if error.args[0] == errno.EAGAIN or error.args[0] == errno.EWOULDBLOCK:
                         time.sleep(0.1)
@@ -77,5 +122,5 @@ class SocketServer:
                         logging.error("Thread error: " +  str(error))
                         sys.exit(1)
         img.close()
-        logging.debug("Client close")    
+        logging.debug("Client " + str(address[1]) + " close")    
         client.close()

@@ -1,4 +1,7 @@
-HOST = "localhost"
-PORT = 12345
+import socket
+
+HOST = "localhost" #socket.gethostbyname(socket.gethostname())
+PORT = 8080
+TIMEOUT = 30
 BUFF_SIZE = 4096
-IMG_DIR_PATH = "img/"
+TMP_DIR = "tmp/"
