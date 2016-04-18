@@ -63,7 +63,6 @@ class SocketServer:
             sys.exit(1)
         try:
             logging.debug("Server running at port " + str(self.port()))
-            print("Server running at port " + str(self.port()))
             while True:
                 client, address =  server.accept()
                 logging.debug("Client connected: " + str(address))
@@ -71,10 +70,10 @@ class SocketServer:
                     thread.start_new_thread(image_handler.run, (client, address))
                 except socket.error as error:
                     logging.error("Server thread error: " +  str(error))
+                    client.close()
                     sys.exit()
         except socket.timeout as error:
             logging.debug("Server stop because " + str(error))
-            print("Server stop because " + str(error))
             server.close()
             sys.exit(1)
 
