@@ -2,6 +2,5 @@ import socket
 
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 8080
-TIMEOUT = 30
-BUFF_SIZE = 4096
-TMP_DIR = "tmp/"
+TIMEOUT = 5
+BUFF_SIZE = 1024
