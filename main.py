@@ -1,9 +1,10 @@
 from imgprocessing import processor
+from server.Server import SocketServer
 import cv2
 import numpy as np
-
-image = cv2.imread("./testimages/test2.png")
-proc = processor.Processor()
-edges = proc.detectCannyEdges(image)
-cv2.imshow("picture",edges)
-cv2.waitKey(2000)
+"""
+Instantiate socket server
+Start server
+"""
+server = SocketServer()
+server.run()
