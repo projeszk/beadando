@@ -2,14 +2,14 @@ import os
 import sys
 import socket
 import numpy as np
-#import cv2
 import logging
 import errno
 from threading import Thread
 
-from properties import property as prop
-
 class ImageHandlerThread(Thread):
+    """
+    Image network handler thread.
+    """
 
     __client = None
     __address = None
@@ -17,6 +17,10 @@ class ImageHandlerThread(Thread):
     def __init__(self, client, address):
         """
         Construct a new ImageModifierThread object.
+
+        :param client:
+        :param address:
+        :return
         """
         Thread.__init__(self)
         self.__client = client
@@ -44,10 +48,6 @@ class ImageHandlerThread(Thread):
         client.send("IMG_OK")
         
         np_barray = np.fromstring(byte_array, np.uint8)
-        #img = cv2.imdecode(np_barray, cv2.IMREAD_COLOR)
-        #cv2.imshow("image", img)
-        #cv2.waitKey(0)
-
         """ openCv method call at this point """
 
         self.__sendImageToClient(client, np_barray)
@@ -57,6 +57,14 @@ class ImageHandlerThread(Thread):
         client.close()
 
     def  __getOptionFromClient(self, client):
+        """
+        Receive option integer from client side.
+
+        :param client:
+        :type client: Socket object
+        :return: option value
+        :rtype: number
+        """
         option = None
         while option == None:
             try: 
@@ -73,10 +81,18 @@ class ImageHandlerThread(Thread):
         return option
 
     def __getImageOnByteArray(self, client):
+        """
+        Receive image from client, and convert it to byte array.
+
+        :param client:
+        :type client: Socket object
+        :return: image reprezenting byte array
+        :rtype: byte array
+        """
         total_data = b""
         while True:
             try: 
-                data = client.recv(prop.BUFF_SIZE)
+                data = client.recv(1024)
                 if not data:
                     break
                 total_data += data
@@ -89,6 +105,15 @@ class ImageHandlerThread(Thread):
         return total_data
 
     def __sendImageToClient(self, client, np_barray):
+        """
+        Send modified image to client.
+
+        :param client:
+        :type client: Socket object
+        :param np_barray:
+        :type np_barray: numpy byte array
+        :return:
+        """
         try:
             client.send(np_barray)
         except socket.error as error:

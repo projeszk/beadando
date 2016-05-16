@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Server</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///D:/projects/python/projeszk/server/server.py">d:\projects\python\projeszk\server\server.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -18,13 +18,10 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="handler.image_handler.html">handler.image_handler</a><br>
-<a href="logging.html">logging</a><br>
-</td><td width="25%" valign=top><a href="os.html">os</a><br>
-<a href="properties.property.html">properties.property</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="properties.property.html">properties.property</a><br>
 </td><td width="25%" valign=top><a href="socket.html">socket</a><br>
-<a href="sys.html">sys</a><br>
-</td><td width="25%" valign=top><a href="thread.html">thread</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
@@ -49,28 +46,37 @@
 &nbsp;<br>
 :return:</tt></dd></dl>
 
-<dl><dt><a name="SocketServer-__init__"><strong>__init__</strong></a>(self, host<font color="#909090">='localhost'</font>, port<font color="#909090">=8080</font>)</dt><dd><tt>Construct&nbsp;new&nbsp;<a href="#SocketServer">SocketServer</a>&nbsp;object.<br>
+<dl><dt><a name="SocketServer-__init__"><strong>__init__</strong></a>(self, host<font color="#909090">='192.168.56.1'</font>, port<font color="#909090">=8080</font>, timeout<font color="#909090">=600</font>)</dt><dd><tt>Construct&nbsp;new&nbsp;<a href="#SocketServer">SocketServer</a>&nbsp;object.<br>
 &nbsp;<br>
-:type&nbsp;host:&nbsp;str<br>
 :param&nbsp;host:&nbsp;Host&nbsp;name<br>
-:type&nbsp;port:&nbsp;number<br>
+:type&nbsp;host:&nbsp;str<br>
 :param&nbsp;port:&nbsp;Port&nbsp;number<br>
+:type&nbsp;port:&nbsp;number<br>
+:param&nbsp;timeout:&nbsp;Timeout&nbsp;second&nbsp;value<br>
+:type&nbsp;port:&nbsp;number<br>
+&nbsp;<br>
 :return:</tt></dd></dl>
 
-<dl><dt><a name="SocketServer-host"><strong>host</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;server&nbsp;host&nbsp;name.<br>
+<dl><dt><a name="SocketServer-getHost"><strong>getHost</strong></a>(self)</dt><dd><tt>Return&nbsp;server&nbsp;host&nbsp;name.<br>
 &nbsp;<br>
 :return:&nbsp;host&nbsp;name<br>
 :rtype:&nbsp;str</tt></dd></dl>
 
-<dl><dt><a name="SocketServer-port"><strong>port</strong></a>(self)</dt><dd><tt>Return&nbsp;server&nbsp;port&nbsp;number.<br>
+<dl><dt><a name="SocketServer-getPort"><strong>getPort</strong></a>(self)</dt><dd><tt>Return&nbsp;server&nbsp;port&nbsp;number.<br>
 &nbsp;<br>
 :return:&nbsp;port&nbsp;number<br>
 :rtype:&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="SocketServer-isRunning"><strong>isRunning</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="SocketServer-run"><strong>run</strong></a>(self)</dt><dd><tt>Server&nbsp;run&nbsp;method.<br>
 Infinite&nbsp;multithreaded&nbsp;server&nbsp;loop.<br>
 &nbsp;<br>
 :return:</tt></dd></dl>
+
+<dl><dt><a name="SocketServer-start"><strong>start</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SocketServer-stop"><strong>stop</strong></a>(self)</dt></dl>
 
 </td></tr></table></td></tr></table>
 </body></html>

@@ -3,7 +3,7 @@ import socket
 import sys
 
 from properties import property as prop
-from threads.server_thread import ImageHandlerThread
+from threads.ImageHandlerThread import ImageHandlerThread
 
 class SocketServer:
     """
@@ -22,6 +22,8 @@ class SocketServer:
         :param host: Host name
         :type host: str
         :param port: Port number
+        :type port: number
+        :param timeout: Timeout second value
         :type port: number
 
         :return:
@@ -71,8 +73,9 @@ class SocketServer:
                     logging.error("Server thread error: " +  str(error))
                     client.close()
                     return
-        except socket.timeout as error:
+        except socket.timeout or KeyboardInterrupt as error:
             logging.debug("Server stop because " + str(error))
+            self.stop()
             server.close()
             return
         logging.info("Server stop")
