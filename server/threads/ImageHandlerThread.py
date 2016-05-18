@@ -8,6 +8,8 @@ from server.properties import property as prop
 from imgprocessing.processor import Processor
 from threading import Thread
 from random import randint
+import cv2
+import time
 
 class ImageHandlerThread(Thread):
     """
@@ -42,21 +44,19 @@ class ImageHandlerThread(Thread):
         """
         client = self.__client
         address = self.__address
-        client.send("Connected to the server with name " + str(address[1]) + ". Send an image of the analysis." + os.linesep)
         #option = self.__getOptionFromClient(client)
         #logging.info("Client option value: " + str(option))
         
         byte_array = self.__getImageOnByteArray(client)
         logging.info("Image arrived from client " + str(address[1]))
-        client.send("IMG_OK")
         
         np_barray = np.fromstring(byte_array, np.uint8)
         img = cv2.imdecode(np_barray, cv2.IMREAD_COLOR)
-        img = catInTheSack(randint(0,3), img)
+        img = self.__catInTheSack(randint(0,3), img)
         
         """ openCv method call at this point """
-
-        self.__sendImageToClient(client, cv2.imencode('.jpg', proc)[1].tostring())
+        time.sleep(10)
+        self.__sendImageToClient(client, cv2.imencode('.jpg', img)[1].tostring())
         logging.info("Sent modified picture to client " + str(address[1]))
         
         logging.debug("Client " + str(address[1]) + " closed")
@@ -95,13 +95,15 @@ class ImageHandlerThread(Thread):
         :return: image reprezenting byte array
         :rtype: byte array
         """
+        print "Receiving image"
         total_data = b""
         while True:
             try: 
-                data = client.recv(1024)
-                if not data:
+                data = client.recv(1024)    
+                if data[0:2] == 'ok':
                     break
                 total_data += data
+                client.send('0')
             except socket.error as error:
                 if error.args[0] == errno.EAGAIN or error.args[0] == errno.EWOULDBLOCK:
                     continue
