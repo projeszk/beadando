@@ -54,8 +54,6 @@ class ImageHandlerThread(Thread):
         np_barray = np.fromstring(byte_array, np.uint8)
         img = cv2.imdecode(np_barray, cv2.IMREAD_COLOR)
         img = self.__catInTheSack(randint(0,3), img)
-        cv2.imshow('image',img)
-        cv2.waitKey(3000)
         """ openCv method call at this point """
         time.sleep(1)
         encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),100]
