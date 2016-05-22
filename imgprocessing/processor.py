@@ -3,39 +3,43 @@ import numpy as np
 
 class Processor():
 	"""
-	Execute canny edge detection.
-
-	:param img: image to process
-	:type img: numpy.array
-
-	:return: processed image
-	:rtype: numpy.array
+	Image processor.
 	"""
 	def detectCannyEdges(self,img):
+		"""
+		Execute canny edge detection.
+
+		:param img: image to process
+		:type img: numpy.array
+
+		:return: processed image
+		:rtype: numpy.array
+		"""
 		return cv2.Canny(img,100,200)
 		
-	"""
-	Execute laplacian detection.
 
-	:param img: image to process
-	:type img: numpy.array
-
-	:return: processed image
-	:rtype: numpy.array
-	"""
 	def detectLaplacianEdges(self,img):
+		"""
+		Execute laplacian detection.
+
+		:param img: image to process
+		:type img: numpy.array
+
+		:return: processed image
+		:rtype: numpy.array
+		"""
 		return cv2.Laplacian(img,cv2.CV_64F)
-	
-	"""
-	Face Detection using Haar Cascades.
-
-	:param img: image to process
-	:type img: numpy.array
-
-	:return: processed image
-	:rtype: numpy.array
-	"""	
+		
 	def haarCascadeDetection(self, img):
+		"""
+		Face Detection using Haar Cascades.
+
+		:param img: image to process
+		:type img: numpy.array
+
+		:return: processed image
+		:rtype: numpy.array
+		"""	
 		face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 		eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
@@ -52,16 +56,16 @@ class Processor():
 		
 		return img
 	
-	"""
-	Harris corner detection.
-
-	:param img: image to process
-	:type img: numpy.array
-
-	:return: processed image
-	:rtype: numpy.array
-	"""	
 	def harrisCornerDetection(self, img):
+		"""
+		Harris corner detection.
+
+		:param img: image to process
+		:type img: numpy.array
+
+		:return: processed image
+		:rtype: numpy.array
+		"""
 		gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 		gray = np.float32(gray)
 		dst = cv2.cornerHarris(gray,2,3,0.04)
