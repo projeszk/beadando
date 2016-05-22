@@ -10,6 +10,7 @@ from threading import Thread
 from random import randint
 import cv2
 import time
+import struct
 
 class ImageHandlerThread(Thread):
     """
@@ -53,10 +54,13 @@ class ImageHandlerThread(Thread):
         np_barray = np.fromstring(byte_array, np.uint8)
         img = cv2.imdecode(np_barray, cv2.IMREAD_COLOR)
         img = self.__catInTheSack(randint(0,3), img)
-        
+        cv2.imshow('image',img)
+        cv2.waitKey(3000)
         """ openCv method call at this point """
-        time.sleep(10)
-        self.__sendImageToClient(client, cv2.imencode('.jpg', img)[1].tostring())
+        time.sleep(1)
+        encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),100]
+        result, imgencode = cv2.imencode('.jpg', img, encode_param)
+        self.__sendImageToClient(client, np.array(imgencode).tostring())
         logging.info("Sent modified picture to client " + str(address[1]))
         
         logging.debug("Client " + str(address[1]) + " closed")
@@ -112,18 +116,30 @@ class ImageHandlerThread(Thread):
                     sys.exit(1)
         return total_data
 
-    def __sendImageToClient(self, client, np_barray):
+    def __sendImageToClient(self, client, image_array):
         """
         Send modified image to client.
 
         :param client:
         :type client: Socket object
-        :param np_barray:
-        :type np_barray: numpy byte array
+        :param image_array:
+        :type image_array: numpy byte array
         :return:
         """
         try:
-            client.send(np_barray)
+            int_in_bytes = struct.pack('!i',len(image_array))
+            print len(image_array)
+            client.send(int_in_bytes)
+            print client.recv(1024)
+            chunks = len(image_array)/1024
+            i = 0
+            while(i<chunks):
+                print "Sending {}. chunk".format(i)
+                client.send(image_array[i*1024:i*1024+1024])
+                print i*1024+1024
+                print client.recv(1024)
+                i += 1
+            client.send(image_array[i*1024:len(image_array) - i*1024])
         except socket.error as error:
             logging.error("Image send error: " + str(error))
     

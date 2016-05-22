@@ -66,6 +66,7 @@ class SocketServer:
             logging.info("Server running at port " + str(self.getPort()) + " and host " + str(self.getHost()))
             while self.isRunning():
                 client, address =  server.accept()
+                client.setblocking(1)
                 logging.debug("Client connected: " + str(address))
                 try:
                     ImageHandlerThread(client, address).start()
